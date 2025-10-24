@@ -1,69 +1,52 @@
-// frontend/src/services/api.js
+/// frontend/src/services/api.js
 
-// Базовый URL бэка из .env
-const BASE_URL = process.env.REACT_APP_NODE_API_URL;
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL || 'http://localhost:5000'; // временно, пока не зальём бэк
 
-// --- Партнёрские товары ---
+// Получение товаров
+export const fetchProducts = async () => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/products`);
+    if (!response.ok) throw new Error('Ошибка загрузки товаров');
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка API:', error);
+    return [];
+  }
+};
+
+// Получение партнёрских товаров
 export const fetchPartners = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/api/partners`);
-    if (!res.ok) throw new Error(`Ошибка API партнёра: ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
+    const response = await fetch(`${API_BASE_URL}/partners`);
+    if (!response.ok) throw new Error('Ошибка загрузки партнёров');
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка API:', error);
     return [];
   }
 };
 
-// --- SaaS инструменты ---
+// Получение SaaS-данных
 export const fetchSaaS = async () => {
   try {
-    const res = await fetch(`${BASE_URL}/api/saas`);
-    if (!res.ok) throw new Error(`Ошибка SaaS API: ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
+    const response = await fetch(`${API_BASE_URL}/saas`);
+    if (!response.ok) throw new Error('Ошибка загрузки SaaS');
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка API:', error);
     return [];
   }
 };
 
-// --- Мобильное приложение (данные/обновления) ---
-export const fetchMobileApp = async () => {
+// Получение данных пользователя
+export const fetchUserData = async (userId) => {
   try {
-    const res = await fetch(`${BASE_URL}/api/mobile-app`);
-    if (!res.ok) throw new Error(`Ошибка Mobile API: ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
-    return {};
-  }
-};
-
-// --- Личные кабинеты (селлеры, издатели, пользователи) ---
-export const fetchUserDashboard = async (userId) => {
-  try {
-    const res = await fetch(`${BASE_URL}/api/users/${userId}`);
-    if (!res.ok) throw new Error(`Ошибка User API: ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
+    const response = await fetch(`${API_BASE_URL}/users/${userId}`);
+    if (!response.ok) throw new Error('Ошибка загрузки пользователя');
+    return await response.json();
+  } catch (error) {
+    console.error('Ошибка API:', error);
     return null;
-  }
-};
-
-// --- Общие статьи / блог ---
-export const fetchArticles = async () => {
-  try {
-    const res = await fetch(`${BASE_URL}/api/articles`);
-    if (!res.ok) throw new Error(`Ошибка Articles API: ${res.status}`);
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error(err);
-    return [];
   }
 };
